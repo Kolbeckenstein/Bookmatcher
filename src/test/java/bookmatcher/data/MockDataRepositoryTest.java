@@ -1,10 +1,12 @@
-package bookmatcher;
+package bookmatcher.data;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import org.junit.Before;
 import org.junit.Test;
+import static org.junit.Assert.*;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -17,14 +19,17 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
-public class BookmatcherControllerTest {
-
-    @Autowired
-    private MockMvc mvc;
+public class MockDataRepositoryTest{
+    public MockDataRepository testRepo = new MockDataRepository();
 
     @Test
-    public void getHello() throws Exception {
-        mvc.perform(MockMvcRequestBuilders.get("/").accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk())
-                .andExpect(content().string(equalTo("Greetings from Spring Boot, Testerino!")));
+    public void getUserJSONBlob(){
+        assertTrue(testRepo.getUserJSONBlob().contains("\"username\":\"Testerino\""));
+        assertTrue(testRepo.getUserJSONBlob().contains("\"books\":[\"Dune\",\"Flowers for Algernon\",\"Watership Down\"]"));
+    }
+
+    @Test
+    public void getUsername(){
+        assertTrue(testRepo.getUsername().equals("Testerino"));
     }
 }
